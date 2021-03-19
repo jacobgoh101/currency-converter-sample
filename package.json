@@ -2,5 +2,8 @@
   "name": "currency-converter",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@nestjs/cli": "^7.5.6"
+  }
 }
