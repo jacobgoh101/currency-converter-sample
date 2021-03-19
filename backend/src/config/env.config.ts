@@ -10,4 +10,6 @@ export const ENV = {
   DB_USERNAME: process.env.DB_USERNAME,
   DB_PASSWORD: process.env.DB_PASSWORD,
   DB_NAME: process.env.DB_NAME,
+  CURRCONV_API_KEY: process.env.CURRCONV_API_KEY,
+  isDev: process.env.NODE_ENV === 'development',
 };
