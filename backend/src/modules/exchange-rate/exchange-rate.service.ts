@@ -6,8 +6,7 @@ import {
 } from '@nestjs/common';
 import { Cron, Interval } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
-import { isEqual } from 'lodash';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { ENV } from '../../config/env.config';
 import { CURRENCY } from './exchange-rate.constants';
 import { GetExchangeRateQuery } from './exchange-rate.dto';
@@ -35,10 +34,10 @@ export class ExchangeRateService {
         .addOrderBy(`"to"`)
         .addOrderBy('id', 'DESC')
         .execute();
-      const usdBasedRatesMap = this.getUsdBasedRatesMap(exchangeRates);
-      if (!usdBasedRatesMap[to] || !usdBasedRatesMap[from])
+      const usdBasedRateMap = this.getExchangeRateMap(exchangeRates);
+      if (!usdBasedRateMap[to] || !usdBasedRateMap[from])
         throw new Error('No Match Found');
-      const rate = usdBasedRatesMap[to] / usdBasedRatesMap[from];
+      const rate = usdBasedRateMap[to] / usdBasedRateMap[from];
       return { from, to, rate };
     } catch (error) {
       Logger.error(error, 'getExchangeRate');
@@ -48,13 +47,16 @@ export class ExchangeRateService {
     }
   }
 
-  private getUsdBasedRatesMap(exchangeRates: ExchangeRate[]) {
+  private getExchangeRateMap(
+    exchangeRates: ExchangeRate[],
+    baseRate = CURRENCY.USD,
+  ) {
     const usdBasedRatesMap = {};
-    usdBasedRatesMap[CURRENCY.USD] = 1;
+    usdBasedRatesMap[baseRate] = 1;
     exchangeRates.forEach((r) => {
-      if (r.from === CURRENCY.USD) {
+      if (r.from === baseRate) {
         usdBasedRatesMap[r.to] = r.rate;
-      } else if (r.to === CURRENCY.USD) {
+      } else if (r.to === baseRate) {
         usdBasedRatesMap[r.from] = 1 / r.rate;
       }
     });
