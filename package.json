@@ -9,6 +9,6 @@
     "concurrently": "^6.0.0"
   },
   "scripts": {
-    "start": "concurrently -n docker,backend 'docker-compose up -d' 'yarn --cwd backend start:dev' "
+    "start": "concurrently -n docker,backend,frontend 'docker-compose up -d' 'yarn --cwd backend start:dev' 'yarn --cwd frontend serve'"
   }
 }
