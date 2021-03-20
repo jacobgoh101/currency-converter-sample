@@ -18,7 +18,16 @@ export class ExchangeRateService {
     @InjectRepository(ExchangeRate)
     private readonly exchangeRateRepo: Repository<ExchangeRate>,
     private readonly httpService: HttpService,
-  ) {}
+  ) {
+    this.seedExchangeRateIfNeeded();
+  }
+
+  private async seedExchangeRateIfNeeded() {
+    const count = await this.exchangeRateRepo.count();
+    if (!count) {
+      return this.updateExchangeRate();
+    }
+  }
 
   async getExchangeRate({ from, to }: GetExchangeRateQuery) {
     try {

@@ -14,3 +14,7 @@ cp .env.sample .env
 yarn
 yarn start
 ```
+
+Frontend is hosted on http://localhost:9090
+
+Backend is hosted on http://localhost:3000
