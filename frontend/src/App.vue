@@ -84,18 +84,9 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "@vue/composition-api";
 import useSWRV from "swrv";
+import { Option } from "./types/general.types";
+import { ExchangeRate } from "./types/exchange-rate.types";
 import axios from "axios";
-
-interface Option {
-  label: string;
-  value: string;
-}
-
-interface ExchangeRate {
-  from: string;
-  to: string;
-  rate: number;
-}
 
 export default defineComponent({
   setup() {
